@@ -2,7 +2,8 @@ package com.sirosh.project.dao;
 
 import com.sirosh.project.entity.User;
 import com.sirosh.project.pojo.Email;
-import org.springframework.data.domain.Pageable;
+import com.sirosh.project.pojo.Pageable;
+
 
 import java.util.List;
 import java.util.Map;
@@ -13,19 +14,19 @@ import java.util.Map;
 public interface UserDao {
 
     //selectors
-    User getUserById(Long id);
-    User getUserByEmail(Email email);
+    User getUserById(Integer id);
+    User getUserByEmail(String email);
     User getUserByNickname(String nickname);
     Map<String,Integer> getAuthorsRatingByDishAmountAndNickname(Pageable pageable);
     List<User> getAllUsers();
     Long getUsersAmount();
 
 
-    User addUser(User user);
+    void addUser(User user);
     void saveUser(User user);
-    void deleteUser(User user);
+    void deleteUser(Integer id);
 
     Boolean isExists(User user);
-    Boolean isEmailExists(Email email);
+    Boolean isEmailExists(String email);
     Boolean isNicknameExists(String nickname);
 }

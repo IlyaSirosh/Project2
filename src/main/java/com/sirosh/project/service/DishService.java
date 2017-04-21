@@ -1,7 +1,8 @@
 package com.sirosh.project.service;
 
 import com.sirosh.project.entity.*;
-import org.springframework.data.domain.Pageable;
+import com.sirosh.project.pojo.Pageable;
+
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface DishService {
 
-    Dish add(Dish dish);
+    void add(Dish dish);
     void update(Dish dish);
     void delete(Dish dish);
 
@@ -24,10 +25,17 @@ public interface DishService {
     List<Dish> getByDishTypes(List<String> types,Pageable page);
     List<Dish> getByIngredients(List<String> ingredients,Pageable page);
     List<Dish> getByIngredientTypes(List<String> types, Pageable page);
+    List<Dish> getByDishTypesExact(List<String> types,Pageable page);
+    List<Dish> getByIngredientsExact(List<String> ingredients,Pageable page);
+    List<Dish> getByIngredientTypesExact(List<String> types, Pageable page);
 
     List<DishType> getTypes(Dish dish);
     List<Ingredient> getIngredients(Dish dish);
     List<IngredientType> getIngredientTypes(Dish dish);
+
+
+    List<Dish> getByDishTypesAndIngredients(List<String> types,List<String> ingredients,Pageable page);
+
 
     Integer getAllCount();
     Integer getCountByAuthor(User author);

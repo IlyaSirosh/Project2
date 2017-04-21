@@ -1,9 +1,11 @@
 package com.sirosh.project.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Illya on 14.02.17.
  */
-public class DishType {
+public class DishType implements Serializable {
 
     private Integer id;
     private String name;

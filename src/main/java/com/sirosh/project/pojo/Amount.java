@@ -2,10 +2,12 @@ package com.sirosh.project.pojo;
 
 import com.sirosh.project.entity.Unity;
 
+import java.io.Serializable;
+
 /**
  * Created by Illya on 4/9/17.
  */
-public class Amount {
+public class Amount implements Serializable {
 
     private Double value;
 

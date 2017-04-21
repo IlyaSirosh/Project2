@@ -11,7 +11,7 @@ public interface UnityDao {
 
 
 
-    Unity addUnity(Unity unity);
+    void addUnity(Unity unity);
     void saveUnity(Unity unity);
     void deleteUnity(Unity unity);
 

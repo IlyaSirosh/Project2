@@ -1,20 +1,22 @@
 package com.sirosh.project.pojo;
 
+import java.io.Serializable;
+
 /**
  * Created by Illya on 4/9/17.
  */
-public class Password {
+public class Password implements Serializable {
 
-    private String password;
+    private String value;
     private boolean encoded;
 
     public Password(String password) {
-        this.password = password;
+        this.value = password;
         this.encoded = false;
     }
 
     public String getPassword() {
-        return password;
+        return value;
     }
 
     public void encode(){
@@ -27,7 +29,7 @@ public class Password {
     };
 
     public void setPassword(String password) {
-        this.password = password;
+        this.value = password;
     }
 
     public boolean isEncoded() {

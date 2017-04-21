@@ -29,8 +29,8 @@ public class JdbcUnityDao implements UnityDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Unity addUnity(Unity unity) {
-        return jdbcTemplate.queryForObject(INSERT_UNITY,mapper,unity.getName());
+    public void addUnity(Unity unity) {
+        jdbcTemplate.update(INSERT_UNITY,unity.getName());
     }
 
     public void saveUnity(Unity unity) {

@@ -1,18 +1,25 @@
 package com.sirosh.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Illya on 14.02.17.
  */
-public class Ingredient {
+public class Ingredient implements Serializable {
 
     private Integer id;
     private String name;
 
     private List<IngredientType> types;
     //private Nutrients nutrients;
+
+    public Ingredient(){
+        this.types = new ArrayList<IngredientType>();
+    }
 
     private User author;
 
@@ -48,7 +55,11 @@ public class Ingredient {
         this.author = author;
     }
 
+    public void addType(IngredientType type){
+        types.add(type);
+    }
 
+    @JsonIgnore
     public List<Integer> getIngredientTypeIds(){
 
         List<Integer> ids = new ArrayList<Integer>();
@@ -64,6 +75,7 @@ public class Ingredient {
         return ids;
     }
 
+    @JsonIgnore
     public List<String> getIngredientTypeNames(){
 
         List<String> ids = new ArrayList<String>();

@@ -17,17 +17,17 @@ public class IngredientTypeServiceImpl implements IngredientTypeService {
     @Autowired
     private IngredientTypeDao ingredientTypeDao;
 
-    public IngredientType add(IngredientType ingredientType) {
+    public void add(IngredientType ingredientType) {
 
-        if(isNameExists(ingredientType.getName()))
-            throw new IllegalArgumentException();
+//        if(isNameExists(ingredientType.getName()))
+//            throw new IllegalArgumentException();
 
-        return ingredientTypeDao.addIngredientType(ingredientType);
+        ingredientTypeDao.addIngredientType(ingredientType);
     }
 
     public void save(IngredientType ingredientType) {
-        if(ingredientType.getId()==0)
-            throw new IllegalArgumentException();
+//        if(ingredientType.getId()==0)
+//            throw new IllegalArgumentException();
 
         ingredientTypeDao.saveIngredientType(ingredientType);
     }

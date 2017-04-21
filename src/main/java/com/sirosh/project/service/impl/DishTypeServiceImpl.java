@@ -17,16 +17,16 @@ public class DishTypeServiceImpl implements DishTypeService {
     @Autowired
     private DishTypeDao dishTypeDao;
 
-    public DishType add(DishType type) {
-        if(isNameExists(type.getName()))
-            throw new IllegalArgumentException();
+    public void add(DishType type) {
+//        if(isNameExists(type.getName()))
+//            throw new IllegalArgumentException();
 
-        return dishTypeDao.addDishType(type);
+        dishTypeDao.addDishType(type);
     }
 
     public void save(DishType type) {
-        if(type.getId()==0)
-            throw new IllegalArgumentException();
+//        if(type.getId()==0)
+//            throw new IllegalArgumentException();
         dishTypeDao.saveDishType(type);
     }
 

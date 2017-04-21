@@ -7,10 +7,12 @@ import com.sirosh.project.dao.UserDao;
 import com.sirosh.project.dao.impl.utils.Wrapper;
 import com.sirosh.project.entity.*;
 import com.sirosh.project.pojo.Amount;
+import com.sirosh.project.pojo.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -36,7 +38,7 @@ public class JdbcMealDao implements MealDao {
     private static final String UPDATE_MEAL_DISHES = "UPDATE meals_dishes_join SET amount=?,unity=? WHERE meal_id=? AND dish_id=?";
     private static final String DELETE_MEAL = "DELETE FROM meals WHERE user=?,date=?,time=?";
     private static final String DELETE_MEAL_DISHES = "DELETE FROM meals_dishes_join WHERE meal_id=?";
-    private static final String DELETE_REDUNDANT_DISHES = "DELETE FROM meals_dishes_join WHERE meal_id=? AND dish_id NOT IN (?)";
+    private static final String DELETE_REDUNDANT_DISHES = "DELETE FROM meals_dishes_join WHERE meal_id=:id AND dish_id NOT IN (:ids)";
     private static final String SELECT_MEALS_BY_USER = "SELECT * FROM meals WHERE user=?";
     private static final String SELECT_MEALS_BY_ID = "SELECT * FROM meals WHERE id=?";
     private static final String SELECT_DISHES_AMOUNT_BY_MEAL = "SELECT dish_id,amount,unity FROM meals_dishes_join WHERE meal_id=?";
@@ -66,15 +68,19 @@ public class JdbcMealDao implements MealDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Meal addMeal(Meal meal) {
-        Meal m = jdbcTemplate.queryForObject(INSERT_MEAL,mealMapper,meal.getUser(),meal.getDate(),meal.getTime());
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    public void addMeal(Meal meal) {
+        jdbcTemplate.update(INSERT_MEAL,meal.getUser(),meal.getDate(),meal.getTime());
+
+        Meal meal2 = getMealByUserDateTime(meal.getUser(),meal.getDate(),meal.getTime());
 
         for(Dish x: meal.getDishes().keySet()){
-            addDishAndAmountToMeal(m,x,meal.getDishes().get(x));
-            m.addDish(x,meal.getDishes().get(x));
+            addDishAndAmountToMeal(meal2,x,meal.getDishes().get(x));
+
         }
 
-        return meal;
     }
 
     private void addDishAndAmountToMeal(Meal meal, Dish dish, Amount amount) {
@@ -97,8 +103,13 @@ public class JdbcMealDao implements MealDao {
             l.add(x.getId());
         }
 
-        if(!l.isEmpty())
-            jdbcTemplate.update(DELETE_REDUNDANT_DISHES,meal.getId(),Wrapper.getSequenceStringFromList(l));
+        if(!l.isEmpty()) {
+            MapSqlParameterSource map = new MapSqlParameterSource();
+            map.addValue("ids",l);
+            map.addValue("id",meal.getId());
+
+            namedParameterJdbcTemplate.update(DELETE_REDUNDANT_DISHES, map);
+        }
     }
 
     public List<Meal> getAllMealsByUser(User user) {
@@ -108,7 +119,7 @@ public class JdbcMealDao implements MealDao {
     }
 
     public List<Meal> getAllMealsByUser(User user, Pageable page) {
-        return jdbcTemplate.query(SELECT_MEALS_BY_USER+" LIMIT ?,?",mealMapper,user.getId(),page.getPageNumber(),page.getPageSize());
+        return jdbcTemplate.query(SELECT_MEALS_BY_USER+" LIMIT ?,?",mealMapper,user.getId(),page.getPageNumber()-1,page.getPageSize());
     }
 
     public Map<Dish, Amount> getDishesByMeal(Meal meal) {
@@ -162,7 +173,7 @@ public class JdbcMealDao implements MealDao {
         public Meal mapRow(ResultSet rs, int i) throws SQLException {
             Meal meal = new Meal();
             meal.setId(rs.getLong("id"));
-            User user = userDao.getUserById(rs.getLong("user"));
+            User user = userDao.getUserById(rs.getInt("user"));
             meal.setUser(user);
             meal.setDate(rs.getDate("date"));
             meal.setTime(rs.getTime("time"));

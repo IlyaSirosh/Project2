@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface UnityService {
 
-    Unity add(Unity unity);
+    void add(Unity unity);
     void save(Unity unity);
     void delete(Unity unity);
 

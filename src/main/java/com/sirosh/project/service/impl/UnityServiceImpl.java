@@ -17,30 +17,30 @@ public class UnityServiceImpl implements UnityService {
     @Autowired
     private UnityDao unityDao;
 
-    public Unity add(Unity unity) {
-        if(isNameExists(unity.getName()))
-            throw new IllegalArgumentException();
+    public void add(Unity unity) {
+//        if(isNameExists(unity.getName()))
+//            throw new IllegalArgumentException();
 
-        return unityDao.addUnity(unity);
+        unityDao.addUnity(unity);
     }
 
     public void save(Unity unity) {
-
+        unityDao.saveUnity(unity);
     }
 
     public void delete(Unity unity) {
-
+        unityDao.deleteUnity(unity);
     }
 
     public List<String> getNames() {
-        return null;
+        return unityDao.getUnityNames();
     }
 
     public Unity getByName(String name) {
-        return null;
+        return unityDao.getUnityByName(name);
     }
 
     public Boolean isNameExists(String name) {
-        return null;
+        return unityDao.isUnityNameExists(name);
     }
 }

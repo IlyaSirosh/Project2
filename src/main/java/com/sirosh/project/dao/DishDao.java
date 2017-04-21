@@ -2,7 +2,8 @@ package com.sirosh.project.dao;
 
 import com.sirosh.project.entity.*;
 import com.sirosh.project.pojo.Amount;
-import org.springframework.data.domain.Pageable;
+import com.sirosh.project.pojo.Pageable;
+
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  */
 public interface DishDao {
 
-    Dish addDish(Dish dish);
+    void addDish(Dish dish);
 
     void saveDish(Dish dish);
 
@@ -29,6 +30,11 @@ public interface DishDao {
     List<Dish> getDishesByIngredients(List<String> ingredients,Pageable page);
     List<Dish> getDishesByIngredientTypes(List<String> types,Pageable page);
 
+    List<Dish> getDishesByTypesExact(List<String> types,Pageable page);
+    List<Dish> getDishesByIngredientsExact(List<String> ingredients,Pageable page);
+    List<Dish> getDishesByIngredientTypesExact(List<String> types,Pageable page);
+
+    List<Dish> getDishesByTypesAndIngredients(List<String> types,List<String> ingredients,Pageable page);
 
 //    List<DishVariety> getDishVarieties(Dish dish,Pageable page);
 //    int getDishVarietiesCount(Dish dish);

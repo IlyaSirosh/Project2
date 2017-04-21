@@ -5,7 +5,8 @@ import com.sirosh.project.entity.Meal;
 import com.sirosh.project.entity.Nutrients;
 import com.sirosh.project.entity.User;
 import com.sirosh.project.pojo.Amount;
-import org.springframework.data.domain.Pageable;
+import com.sirosh.project.pojo.Pageable;
+
 
 import java.sql.Date;
 import java.sql.Time;
@@ -20,7 +21,7 @@ public interface MealDao {
 
     // Add
 
-    Meal addMeal(Meal meal);
+    void addMeal(Meal meal);
 
     // save
 

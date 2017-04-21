@@ -3,7 +3,8 @@ package com.sirosh.project.dao;
 import com.sirosh.project.entity.Dish;
 import com.sirosh.project.entity.Ingredient;
 import com.sirosh.project.entity.IngredientType;
-import org.springframework.data.domain.Pageable;
+import com.sirosh.project.pojo.Pageable;
+
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface IngredientDao {
 
-    Ingredient addIngredient(Ingredient ingredient);
+    void addIngredient(Ingredient ingredient);
 
     void saveIngredient(Ingredient ingredient);
     void deleteIngredient(Ingredient ingredient);

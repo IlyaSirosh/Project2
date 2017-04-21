@@ -4,9 +4,10 @@ import com.sirosh.project.dao.IngredientDao;
 import com.sirosh.project.dao.IngredientTypeDao;
 import com.sirosh.project.entity.Ingredient;
 import com.sirosh.project.entity.IngredientType;
+import com.sirosh.project.pojo.Pageable;
 import com.sirosh.project.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,18 +23,18 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
     private IngredientTypeDao ingredientTypeDao;
 
-    public Ingredient add(Ingredient ingredient) {
+    public void add(Ingredient ingredient) {
 
-        if(isExixts(ingredient.getName()))
-            throw new IllegalArgumentException();
+//        if(isExixts(ingredient.getName()))
+//            throw new IllegalArgumentException();
 
-        return ingredientDao.addIngredient(ingredient);
+        ingredientDao.addIngredient(ingredient);
     }
 
     public void save(Ingredient ingredient) {
 
-        if(ingredient.getId()==0)
-            throw new IllegalArgumentException();
+//        if(ingredient.getId()==0)
+//            throw new IllegalArgumentException();
 
         ingredientDao.saveIngredient(ingredient);
 
@@ -48,7 +49,11 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     public List<Ingredient> getByTypes(List<String> types, Pageable page) {
-        return ingredientDao.getAllIngredients(page);
+        return ingredientDao.getIngredientsByTypes(types, page);
+    }
+
+    public List<Ingredient> getByTypes(List<String> types) {
+        return ingredientDao.getIngredientsByTypes(types);
     }
 
     public List<IngredientType> getTypes(Ingredient ingredient) {
@@ -73,6 +78,10 @@ public class IngredientServiceImpl implements IngredientService {
 
     public List<String> getIngredientNamesWithPrefix(String namePrefix, Pageable page) {
         return ingredientDao.getIngredientNamesWithPrefix(namePrefix,page);
+    }
+
+    public Ingredient getById(Integer id) {
+        return ingredientDao.getIngredientById(id);
     }
 
     public Ingredient getByName(String name) {

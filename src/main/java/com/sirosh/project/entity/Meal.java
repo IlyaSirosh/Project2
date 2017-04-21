@@ -2,15 +2,17 @@ package com.sirosh.project.entity;
 
 import com.sirosh.project.pojo.Amount;
 
+import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Illya on 14.02.17.
  */
-public class Meal {
+public class Meal implements Serializable {
 
     private Long id;
     private User user;

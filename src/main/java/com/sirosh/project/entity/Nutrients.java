@@ -1,9 +1,11 @@
 package com.sirosh.project.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Illya on 14.02.17.
  */
-public class Nutrients {
+public class Nutrients implements Serializable {
 
     private Double carbohydrates;
     private Double proteins;

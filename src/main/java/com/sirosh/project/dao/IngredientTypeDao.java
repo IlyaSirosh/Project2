@@ -12,7 +12,7 @@ import java.util.List;
 public interface IngredientTypeDao {
 
 
-    IngredientType addIngredientType(IngredientType type);
+    void addIngredientType(IngredientType type);
     void saveIngredientType(IngredientType type);
     void deleteIngredientType(IngredientType type);
 

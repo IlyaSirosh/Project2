@@ -5,9 +5,10 @@ import com.sirosh.project.dao.DishTypeDao;
 import com.sirosh.project.dao.IngredientDao;
 import com.sirosh.project.dao.IngredientTypeDao;
 import com.sirosh.project.entity.*;
+import com.sirosh.project.pojo.Pageable;
 import com.sirosh.project.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,18 +31,22 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private IngredientTypeDao ingredientTypeDao;
 
-    public Dish add(Dish dish) {
+    public void add(Dish dish) {
 
-        if(isNameExists(dish.getName()))
-            throw new IllegalArgumentException("dish name already exist");
+//        if(isNameExists(dish.getName()))
+//            throw new IllegalArgumentException("dish name already exist");
 
-        return dishDao.addDish(dish);
+        if(dish.getNutrients()==null) System.out.println("Nutrients null");
+        if(dish.getIngredients()==null)System.out.println("Ingredients null");
+        if(dish.getTypes()==null)System.out.println("Types null");
+
+        dishDao.addDish(dish);
     }
 
     public void update(Dish dish) {
 
-        if(dish.getId()==0)
-            throw new IllegalArgumentException("incomplete type Dish (id)");
+//        if(dish.getId()==0)
+//            throw new IllegalArgumentException("incomplete type Dish (id)");
 
         dishDao.saveDish(dish);
     }
@@ -86,6 +91,18 @@ public class DishServiceImpl implements DishService {
         return dishDao.getDishesByIngredientTypes(types, page);
     }
 
+    public List<Dish> getByDishTypesExact(List<String> types, Pageable page) {
+        return dishDao.getDishesByTypesExact(types, page);
+    }
+
+    public List<Dish> getByIngredientsExact(List<String> ingredients, Pageable page) {
+        return dishDao.getDishesByIngredientsExact(ingredients, page);
+    }
+
+    public List<Dish> getByIngredientTypesExact(List<String> types, Pageable page) {
+        return dishDao.getDishesByIngredientTypesExact(types, page);
+    }
+
     public List<DishType> getTypes(Dish dish) {
         return dishTypeDao.getDishTypesByDish(dish);
     }
@@ -96,6 +113,10 @@ public class DishServiceImpl implements DishService {
 
     public List<IngredientType> getIngredientTypes(Dish dish) {
         return ingredientTypeDao.getIngredientTypesByDish(dish);
+    }
+
+    public List<Dish> getByDishTypesAndIngredients(List<String> types, List<String> ingredients, Pageable page) {
+        return dishDao.getDishesByTypesAndIngredients(types, ingredients, page);
     }
 
     public Integer getAllCount() {

@@ -13,7 +13,7 @@ public interface DishTypeDao {
 
     List<DishType> getAllDishTypes();
 
-    DishType addDishType(DishType type);
+    void addDishType(DishType type);
 
     void saveDishType(DishType type);
 

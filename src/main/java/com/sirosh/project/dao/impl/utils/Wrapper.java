@@ -66,11 +66,12 @@ public class Wrapper {
             sb.append("'");
             sb.append(x.toString());
             sb.append("',");
+            //sb.append(",");
         }
 
+        //sb.deleteCharAt(sb.length()-1);
         sb.deleteCharAt(sb.length()-1);
-        sb.deleteCharAt(sb.length()-1);
-        sb.deleteCharAt(0);
+        //sb.deleteCharAt(0);
 
         return sb.toString();
     }

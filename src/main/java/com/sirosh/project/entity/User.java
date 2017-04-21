@@ -1,44 +1,47 @@
 package com.sirosh.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sirosh.project.pojo.Email;
 import com.sirosh.project.pojo.Password;
 import com.sirosh.project.pojo.Role;
 
+import java.io.Serializable;
+
 /**
  * Created by Illya on 14.02.17.
  */
-public class User {
+public class User implements Serializable{
 
-    private Long id;
-
-    private Password password;
-    private Email email;
+    private Integer id;
+    @JsonIgnore
+    private String password;
+    private String email;
     private String nickname;
 
-    private Role role;
+    private String role;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Password getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Password password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Email email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -50,15 +53,12 @@ public class User {
         this.nickname = nickname;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public void setRole(int role) {
-        this.role = new Role(role);
-    }
 }

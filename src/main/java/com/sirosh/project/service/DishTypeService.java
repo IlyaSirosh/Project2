@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface DishTypeService {
 
-    DishType add(DishType type);
+    void add(DishType type);
     void save(DishType type);
     void delete(DishType type);
 

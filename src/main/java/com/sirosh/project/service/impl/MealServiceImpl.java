@@ -7,9 +7,9 @@ import com.sirosh.project.entity.Meal;
 import com.sirosh.project.entity.Nutrients;
 import com.sirosh.project.entity.User;
 import com.sirosh.project.pojo.Amount;
+import com.sirosh.project.pojo.Pageable;
 import com.sirosh.project.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -26,17 +26,17 @@ public class MealServiceImpl implements MealService {
     @Autowired
     private MealDao mealDao;
 
-    public Meal add(Meal meal) {
-        if(meal.getDishes()==null||meal.getUser()==null
-                || meal.getDate()==null||meal.getTime()==null)
-            throw new IllegalArgumentException();
+    public void add(Meal meal) {
+//        if(meal.getDishes()==null||meal.getUser()==null
+//                || meal.getDate()==null||meal.getTime()==null)
+//            throw new IllegalArgumentException();
 
-        return mealDao.addMeal(meal);
+        mealDao.addMeal(meal);
     }
 
     public void update(Meal meal) {
-        if(meal.getId()==0)
-            throw new IllegalArgumentException();
+//        if(meal.getId()==0)
+//            throw new IllegalArgumentException();
         mealDao.saveMeal(meal);
     }
 

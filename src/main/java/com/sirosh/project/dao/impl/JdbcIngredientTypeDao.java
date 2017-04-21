@@ -8,6 +8,8 @@ import com.sirosh.project.entity.IngredientType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -29,7 +31,7 @@ public class JdbcIngredientTypeDao implements IngredientTypeDao {
     private static final String SELECT_INGREDIENT_TYPE_BY_NAME = "SELECT * FROM ingredient_types WHERE name=?";
     private static final String SELECT_INGREDIENT_TYPE_NAMES = "SELECT name FROM ingredient_types";
     private static final String SELECT_INGREDIENT_TYPE_NAMES_USING_PREFIX = "SELECT name FROM ingredient_types WHERE name LIKE ?";
-    private static final String SELECT_INGREDIENT_TYPES_BY_NAMES = "SELECT * FROM ingredient_types WHERE name IN (?)";
+    private static final String SELECT_INGREDIENT_TYPES_BY_NAMES = "SELECT * FROM ingredient_types WHERE name IN (:names)";
     private static final String SELECT_INGREDIENT_TYPES_BY_INGREDIENT = "SELECT * " +
                                                                         "FROM ingredient_types  " +
                                                                         "WHERE id IN (SELECT type_id " +
@@ -48,14 +50,14 @@ public class JdbcIngredientTypeDao implements IngredientTypeDao {
                                                                          "FROM ingredient_types  " +
                                                                          "WHERE id IN (SELECT type_id " +
                                                                                         "FROM ingredients_types_join " +
-                                                                                        "WHERE ingredient_id IN (?)" +
+                                                                                        "WHERE ingredient_id IN (:ids)" +
                                                                          ")";
 
     private static final String SELECT_INGREDIENT_TYPES_BY_DISH = "SELECT * " +
                                                                     "FROM ingredient_types  " +
                                                                     "WHERE id IN (SELECT T.type_id " +
-                                                                                "FROM ingredients_types_join T" +
-                                                                                "WHERE T.ingredient_id IN (SELECT I.ingredient_id" +
+                                                                                "FROM ingredients_types_join T " +
+                                                                                "WHERE T.ingredient_id IN (SELECT I.ingredient_id " +
                                                                                                             "FROM dishes_ingredients_join I" +
                                                                                                             "WHERE I.dish_id=?"+
                                                                                 ")" +
@@ -64,10 +66,14 @@ public class JdbcIngredientTypeDao implements IngredientTypeDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-    public IngredientType addIngredientType(IngredientType type) {
-        return jdbcTemplate.queryForObject(INSERT_INGREDIENT_TYPE,mapper,type.getName());
+
+    public void addIngredientType(IngredientType type) {
+        jdbcTemplate.update(INSERT_INGREDIENT_TYPE,type.getName());
+
     }
 
     public void saveIngredientType(IngredientType type) {
@@ -95,7 +101,11 @@ public class JdbcIngredientTypeDao implements IngredientTypeDao {
     }
 
     public List<IngredientType> getIngredientTypesByNames(List<String> names) {
-        return jdbcTemplate.query(SELECT_INGREDIENT_TYPES_BY_NAMES,mapper, Wrapper.getSequenceStringFromList(names));
+
+        MapSqlParameterSource map =  new MapSqlParameterSource();
+        map.addValue("names",names);
+
+        return namedParameterJdbcTemplate.query(SELECT_INGREDIENT_TYPES_BY_NAMES,map,mapper);
     }
 
     public List<IngredientType> getIngredientTypesByIngredient(Ingredient ingredient) {
@@ -106,9 +116,11 @@ public class JdbcIngredientTypeDao implements IngredientTypeDao {
         return jdbcTemplate.query(SELECT_INGREDIENT_TYPES_BY_INGREDIENT_NAME,mapper,ingredient);
     }
 
-    public List<IngredientType> getIngredientTypesByIngredient(List<Integer> ingredientIds) {
+    public List<IngredientType> getIngredientTypesByIngredient(List<Integer> ids) {
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("ids",ids);
 
-        return jdbcTemplate.query(SELECT_INGREDIENT_TYPES_BY_INGREDIENTS,mapper,Wrapper.getSequenceStringFromList(ingredientIds));
+        return namedParameterJdbcTemplate.query(SELECT_INGREDIENT_TYPES_BY_INGREDIENTS,map,mapper);
     }
 
     public List<IngredientType> getIngredientTypesByDish(Dish dish) {

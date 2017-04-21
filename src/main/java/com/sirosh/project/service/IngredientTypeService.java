@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface IngredientTypeService {
 
-    IngredientType add(IngredientType ingredientType);
+    void add(IngredientType ingredientType);
     void save(IngredientType ingredientType);
     void delete(IngredientType ingredientType);
 

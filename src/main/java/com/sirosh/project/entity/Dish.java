@@ -1,7 +1,9 @@
 package com.sirosh.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sirosh.project.pojo.Amount;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,23 +12,28 @@ import java.util.Map;
 /**
  * Created by Illya on 14.02.17.
  */
-public class Dish {
+public class Dish implements Serializable {
 
     private Integer id;
     private String name;
 
-    private Map<Ingredient,Amount> ingredients;
+    private List<Ingredient> ingredients;
     private Nutrients nutrients;
 
     private List<DishType> types;
 
-    private URL image;
+    private String image;
 
     private String description;
 
     private User author;
 
-    public static URL defaultImage;
+    public static String defaultImage = "http://example.com/images/default.jpeg";
+
+
+    public Dish(){
+        this.types = new ArrayList<DishType>();
+    }
 
     public Integer getId() {
         return id;
@@ -44,16 +51,20 @@ public class Dish {
         this.name = name;
     }
 
-    public Map<Ingredient, Amount> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Map<Ingredient, Amount> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
     public Nutrients getNutrients() {
         return nutrients;
+    }
+
+    public void addType(DishType type){
+        types.add(type);
     }
 
     public void setNutrients(Nutrients nutrients) {
@@ -68,11 +79,11 @@ public class Dish {
         this.types = types;
     }
 
-    public URL getImage() {
-        return image;
+    public String getImage() {
+        return image==null?defaultImage:image;
     }
 
-    public void setImage(URL image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -92,23 +103,23 @@ public class Dish {
         this.author = author;
     }
 
-
+    @JsonIgnore
     public Double getCarbohydrates(){
         return nutrients.getCarbohydrates();
     }
-
+    @JsonIgnore
     public Double getProteins(){
         return nutrients.getProteins();
     }
-
+    @JsonIgnore
     public Double getFats(){
         return nutrients.getFats();
     }
-
+    @JsonIgnore
     public Double getCalories(){
         return nutrients.getCalories();
     }
-
+    @JsonIgnore
     public List<Integer> getDishTypeIds(){
 
         List<Integer> l = new ArrayList<Integer>();
@@ -121,19 +132,18 @@ public class Dish {
 
         return l;
     }
-
+    @JsonIgnore
     public List<Integer> getIngredientIds(){
 
         List<Integer> l = new ArrayList<Integer>();
 
         if(ingredients!=null)
-            for(Ingredient x: ingredients.keySet())
+            for(Ingredient x: ingredients)
                 l.add(x.getId());
         else
             l.add(-1);
 
         return l;
     }
-
 
 }

@@ -5,7 +5,7 @@ import com.sirosh.project.entity.Meal;
 import com.sirosh.project.entity.Nutrients;
 import com.sirosh.project.entity.User;
 import com.sirosh.project.pojo.Amount;
-import org.springframework.data.domain.Pageable;
+import com.sirosh.project.pojo.Pageable;
 
 
 import java.sql.Date;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public interface MealService {
 
-    Meal add(Meal meal);
+    void add(Meal meal);
     void update(Meal meal);
     void delete(Meal meal);
 
